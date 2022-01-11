@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ptakoinformator.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/home_fragment" >
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentReports"
+            app:destination="@id/reportsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.example.ptakoinformator.fragments.ReportsFragment"
+        android:label="fragment_reports"
+        tools:layout="@layout/reports_fragment" />
+</navigation>

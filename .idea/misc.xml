@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.3411458333333333" />
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.3411458333333333" />
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/layout/activity_main.xml" value="0.20729166666666668" />
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/layout/fragment_home.xml" value="0.25181159420289856" />
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/layout/fragment_raports.xml" value="0.25181159420289856" />
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/layout/fragment_reports.xml" value="0.2956140350877193" />
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/layout/home_fragment.xml" value="0.16228070175438597" />
+        <entry key="..\:/Studia/Android/Nauka/ptakoinformator/app/src/main/res/layout/reports_fragment.xml" value="0.16228070175438597" />
+        <entry key="..\:/Studia_21-22/Inzynieria_oprogramowania/ptakoinformator/app/src/main/res/layout/activity_main.xml" value="0.19114583333333332" />
+        <entry key="..\:/Users/Lukasz/AndroidStudioProjects/Ptakoinformator/ptakoinformator/app/src/main/res/layout/reports_fragment.xml" value="0.20260416666666667" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
