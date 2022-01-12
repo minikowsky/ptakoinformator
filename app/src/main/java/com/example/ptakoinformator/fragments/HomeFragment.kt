@@ -31,14 +31,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.ptakoinformator.TFLiteModelManager
 import com.example.ptakoinformator.databinding.HomeFragmentBinding
-
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-
 import org.tensorflow.lite.support.image.TensorImage
-
-
 import java.util.*
 
 
