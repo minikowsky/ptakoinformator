@@ -7,15 +7,16 @@
     tools:context=".fragments.HomeFragment">
 
 
-    <ImageView
-        android:id="@+id/image_view_selected_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+    <com.example.ptakoinformator.customview.ClassifiedBirdView
+        android:id="@+id/classified_bird_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.25"
+        />
 
     <ImageButton
         android:id="@+id/button_take_photo"
