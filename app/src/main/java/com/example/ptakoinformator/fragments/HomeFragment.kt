@@ -143,9 +143,7 @@ class HomeFragment : Fragment() {
 
     private val getPhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK) {
-            binding.imageViewSelectedImage.setImageBitmap(
-                ThumbnailUtils.extractThumbnail(
-                    BitmapFactory.decodeFile(currentPhotoPath),64,64))
+            binding.classifiedBirdView.setImage(currentPhotoPath)
         }
     }
 
