@@ -2,6 +2,8 @@ package com.example.ptakoinformator.fragments
 
 
 import android.Manifest
+import android.R.attr
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 
@@ -25,24 +27,38 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.ptakoinformator.TFLiteModelManager
 import com.example.ptakoinformator.databinding.HomeFragmentBinding
+import com.example.ptakoinformator.viewmodels.HomeViewModel
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.label.Category
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
+import android.R.attr.path
+import android.database.Cursor
+import android.graphics.Matrix
+import java.net.URI
+import android.os.ParcelFileDescriptor
+import android.util.Size
+import java.io.FileDescriptor
 
 
 class HomeFragment : Fragment() {
     lateinit var currentPhotoPath: String
     private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding!!
-
+    private val viewModel: HomeViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,35 +79,38 @@ class HomeFragment : Fragment() {
     }
 
 
+    private fun storagePermissionsGranted() = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).all{
+        ContextCompat.checkSelfPermission(
+            requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    }
+
     private fun allPermissionsGranted() = arrayOf(Manifest.permission.CAMERA).all {
         ContextCompat.checkSelfPermission(
             requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun pickImageGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        getImage.launch(intent)
+        if(storagePermissionsGranted()){
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            getImage.launch(intent)
+        }
+        else{
+            requestStoragePermission.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        }
     }
 
     private val getImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK) {
             //val selectedImage = it.data?.getParcelableExtra<Bitmap>("data")
             val selectedImage = it.data?.data
-            //binding.imageViewSelectedImage.setImageURI(selectedImage)
             Log.d("DBG",selectedImage.toString())
-            if(Build.VERSION.SDK_INT >= 28) {
-                val source: ImageDecoder.Source = ImageDecoder.createSource(
-                    requireActivity().contentResolver,
-                    selectedImage!!
-                )
-                var bitmap: Bitmap = ImageDecoder.decodeBitmap(source)
-                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                val model = TFLiteModelManager.getInstance(requireContext())
-                val outputs = model.process(TensorImage.fromBitmap(bitmap))
-                val probabilities = outputs.probabilityAsCategoryList
-                Log.d("DBG",probabilities.toString())
-            }
+            val result=viewModel.classifyBird(selectedImage!!,requireContext())
+            currentPhotoPath=getRealPathFromURI(selectedImage)!!
+            val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
+            val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
+            Log.d("DBG",currentPhotoPath)
+            bindClassifiedBirdView(thumbnail,result, getCurrentDate())
         }
     }
     @Throws(IOException::class)
@@ -143,9 +162,44 @@ class HomeFragment : Fragment() {
 
     private val getPhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK) {
-            binding.classifiedBirdView.setImage(currentPhotoPath)
+            val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
+            val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
+            val rotateThumbnail= rotateBitmap(thumbnail)
+            val uri=Uri.fromFile(File(currentPhotoPath))
+            Log.d("ADK",uri.toString())
+            val result=viewModel.classifyBird(uri,requireContext())
+            bindClassifiedBirdView(rotateThumbnail!!,result, getCurrentDate())
         }
     }
+
+
+    private fun getRealPathFromURI(contentURI: Uri): String? {
+        val filePath: String?
+        val cursor: Cursor? = requireActivity().contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            filePath = contentURI.path
+        } else {
+            cursor.moveToFirst()
+            val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            filePath = cursor.getString(idx)
+            cursor.close()
+        }
+        return filePath
+    }
+
+    private val requestStoragePermission=
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
+            permission.entries.forEach {
+                if (!it.value) {
+                    Toast.makeText(requireContext(),
+                        "Nie przyznano dostępu",
+                        Toast.LENGTH_SHORT).show()
+                    return@registerForActivityResult
+                }
+            }
+            pickImageGallery()
+        }
+
 
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { permission ->
@@ -157,6 +211,26 @@ class HomeFragment : Fragment() {
                     Toast.LENGTH_SHORT).show()
             }
         }
+
+    private fun rotateBitmap(source: Bitmap): Bitmap? {
+        val matrix = Matrix()
+        matrix.postRotate(90F)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
+
+    private fun bindClassifiedBirdView(bitmap: Bitmap, result: List<Category>, date: String){
+        binding.classifiedBirdView.setPhoto(bitmap)
+        binding.classifiedBirdView.setFirstResult(result[0].label, (result[0].score*100).toString())
+        binding.classifiedBirdView.setSecondResult(result[1].label, (result[1].score*100).toString())
+        binding.classifiedBirdView.setThirdResult(result[2].label, (result[2].score*100).toString())
+        binding.classifiedBirdView.setDate(date)
+    }
+
+
+    private fun getCurrentDate(): String{
+        val simpleDateFormat= SimpleDateFormat("dd-MM-yyyy HH:MM:SS")
+        return simpleDateFormat.format(Date())
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
