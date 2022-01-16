@@ -12,11 +12,11 @@
         tools:layout="@layout/home_fragment" >
         <action
             android:id="@+id/action_fragmentHome_to_fragmentReports"
-            app:destination="@id/reportsFragment" />
+            app:destination="@id/historyFragment" />
     </fragment>
     <fragment
-        android:id="@+id/reportsFragment"
-        android:name="com.example.ptakoinformator.fragments.ReportsFragment"
-        android:label="fragment_reports"
-        tools:layout="@layout/reports_fragment" />
+        android:id="@+id/historyFragment"
+        android:name="com.example.ptakoinformator.fragments.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/history_fragment" />
 </navigation>
