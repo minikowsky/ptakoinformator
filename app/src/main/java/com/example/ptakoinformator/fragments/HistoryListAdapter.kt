@@ -27,11 +27,16 @@ class HistoryListAdapter(private val birds: LiveData<List<Bird>>)
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val current = birds.value?.get(position)
-        holder.classifiedBirdView.setImage(current?.photoUri)
+        val bitmap = BitmapFactory.decodeFile(current?.photoUri)
+        val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
+        holder.classifiedBirdView.setPhoto(thumbnail)
         holder.classifiedBirdView.setDate(current?.date)
-        holder.classifiedBirdView.setFirstResult(current?.classification?.mainClassification)
-        holder.classifiedBirdView.setSecondResult(current?.classification?.secondClassification)
-        holder.classifiedBirdView.setThirdResult(current?.classification?.thirdClassification)
+        holder.classifiedBirdView.setFirstResult(
+            current?.classification?.mainClassification,current?.classification?.mainProbability.toString())
+        holder.classifiedBirdView.setSecondResult(
+            current?.classification?.secondClassification,current?.classification?.secondProbability.toString())
+        holder.classifiedBirdView.setThirdResult(
+            current?.classification?.thirdClassification,current?.classification?.thirdProbability.toString())
 
     }
 
