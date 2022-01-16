@@ -1,5 +1,6 @@
 package com.example.ptakoinformator.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ptakoinformator.R
@@ -29,12 +31,19 @@ class HistoryFragment: Fragment() {
         return inflater.inflate(R.layout.history_fragment,container,false)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val historyListAdapter = HistoryListAdapter(viewModel.birds)
 
         val historyLayoutManager = GridLayoutManager(context,2)
+
+        viewModel.birds.observe(viewLifecycleOwner,
+        Observer {
+            historyListAdapter.notifyDataSetChanged()
+        })
+
         view.findViewById<RecyclerView>(R.id.rv_history)
             .apply {
                 adapter = historyListAdapter

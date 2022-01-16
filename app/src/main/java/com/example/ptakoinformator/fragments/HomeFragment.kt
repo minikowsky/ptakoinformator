@@ -51,6 +51,8 @@ import android.graphics.Matrix
 import java.net.URI
 import android.os.ParcelFileDescriptor
 import android.util.Size
+import com.example.ptakoinformator.data.Bird
+import com.example.ptakoinformator.data.Classification
 import java.io.FileDescriptor
 
 
@@ -76,6 +78,12 @@ class HomeFragment : Fragment() {
         binding.buttonUploadPhoto.setOnClickListener { pickImageGallery() }
 
         binding.buttonTakePhoto.setOnClickListener { takePhoto() }
+
+        viewModel.lastBird.observe(viewLifecycleOwner){
+            val bitmap = BitmapFactory.decodeFile(it.photoUri)
+            val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
+            bindClassifiedBirdView(thumbnail, it.classification, it.date)
+        }
     }
 
 
@@ -110,7 +118,17 @@ class HomeFragment : Fragment() {
             val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
             val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
             Log.d("DBG",currentPhotoPath)
-            bindClassifiedBirdView(thumbnail,result, getCurrentDate())
+            val bird = Bird(0,
+                currentPhotoPath,
+                getCurrentDate(),
+                "",
+                Classification(
+                    result[0].score,result[0].label,
+                    result[1].score,result[1].label,
+                    result[2].score,result[2].label)
+            )
+            viewModel.createBird(bird)
+            bindClassifiedBirdView(thumbnail!!,bird.classification, getCurrentDate())
         }
     }
     @Throws(IOException::class)
@@ -168,7 +186,17 @@ class HomeFragment : Fragment() {
             val uri=Uri.fromFile(File(currentPhotoPath))
             Log.d("ADK",uri.toString())
             val result=viewModel.classifyBird(uri,requireContext())
-            bindClassifiedBirdView(rotateThumbnail!!,result, getCurrentDate())
+            val bird = Bird(0,
+                currentPhotoPath,
+                getCurrentDate(),
+                "",
+                Classification(
+                    result[0].score,result[0].label,
+                    result[1].score,result[1].label,
+                    result[2].score,result[2].label)
+            )
+            viewModel.createBird(bird)
+            bindClassifiedBirdView(rotateThumbnail!!,bird.classification, getCurrentDate())
         }
     }
 
@@ -218,11 +246,11 @@ class HomeFragment : Fragment() {
         return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 
-    private fun bindClassifiedBirdView(bitmap: Bitmap, result: List<Category>, date: String){
+    private fun bindClassifiedBirdView(bitmap: Bitmap, result: Classification, date: String){
         binding.classifiedBirdView.setPhoto(bitmap)
-        binding.classifiedBirdView.setFirstResult(result[0].label, (result[0].score*100).toString())
-        binding.classifiedBirdView.setSecondResult(result[1].label, (result[1].score*100).toString())
-        binding.classifiedBirdView.setThirdResult(result[2].label, (result[2].score*100).toString())
+        binding.classifiedBirdView.setFirstResult(result.mainClassification, (result.mainProbability*100).toString())
+        binding.classifiedBirdView.setSecondResult(result.secondClassification, (result.secondProbability*100).toString())
+        binding.classifiedBirdView.setThirdResult(result.thirdClassification, (result.thirdProbability*100).toString())
         binding.classifiedBirdView.setDate(date)
     }
 
