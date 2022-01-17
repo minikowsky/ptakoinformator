@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
@@ -14,6 +15,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.ptakoinformator.R
+import com.squareup.picasso.Picasso
+
 class ClassifiedBirdView(context: Context, attrs: AttributeSet?): ConstraintLayout(context, attrs) {
     private val imageView:ImageView
     private val txtViewFirstResult:TextView
@@ -30,8 +33,12 @@ class ClassifiedBirdView(context: Context, attrs: AttributeSet?): ConstraintLayo
 
     }
 
-    fun setPhoto(bitmap: Bitmap?){
-        imageView.setImageBitmap(bitmap)
+    fun setPhoto(string: String?){
+        Picasso.get()
+            .load("file:$string")
+            .resize(200, 200)
+            .centerCrop()
+            .into(imageView)
     }
     fun setDate(date:String?){
         txtViewDate.text=("Data: ${date?:""}")

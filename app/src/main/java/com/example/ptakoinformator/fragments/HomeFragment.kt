@@ -80,11 +80,7 @@ class HomeFragment : Fragment() {
         binding.buttonTakePhoto.setOnClickListener { takePhoto() }
 
         viewModel.lastBird.observe(viewLifecycleOwner){
-
-            val bitmap = BitmapFactory.decodeFile(it?.photoUri)
-            val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
-            bindClassifiedBirdView(thumbnail, it?.classification, it?.date)
-
+            bindClassifiedBirdView(it?.photoUri, it?.classification, it?.date)
         }
     }
 
@@ -112,13 +108,9 @@ class HomeFragment : Fragment() {
 
     private val getImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK) {
-            //val selectedImage = it.data?.getParcelableExtra<Bitmap>("data")
             val selectedImage = it.data?.data
-            Log.d("DBG",selectedImage.toString())
             val result=viewModel.classifyBird(selectedImage!!,requireContext())
             currentPhotoPath=getRealPathFromURI(selectedImage)!!
-            val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
-            val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
             Log.d("DBG",currentPhotoPath)
             val bird = Bird(0,
                 currentPhotoPath,
@@ -130,7 +122,7 @@ class HomeFragment : Fragment() {
                     result[2].score,result[2].label)
             )
             viewModel.createBird(bird)
-            bindClassifiedBirdView(thumbnail!!,bird.classification, getCurrentDate())
+            bindClassifiedBirdView(currentPhotoPath,bird.classification, getCurrentDate())
         }
     }
     @Throws(IOException::class)
@@ -182,9 +174,6 @@ class HomeFragment : Fragment() {
 
     private val getPhoto = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK) {
-            val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
-            val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
-            val rotateThumbnail= rotateBitmap(thumbnail)
             val uri=Uri.fromFile(File(currentPhotoPath))
             Log.d("ADK",uri.toString())
             val result=viewModel.classifyBird(uri,requireContext())
@@ -198,7 +187,7 @@ class HomeFragment : Fragment() {
                     result[2].score,result[2].label)
             )
             viewModel.createBird(bird)
-            bindClassifiedBirdView(rotateThumbnail!!,bird.classification, getCurrentDate())
+            bindClassifiedBirdView(currentPhotoPath,bird.classification, getCurrentDate())
         }
     }
 
@@ -242,14 +231,9 @@ class HomeFragment : Fragment() {
             }
         }
 
-    private fun rotateBitmap(source: Bitmap): Bitmap? {
-        val matrix = Matrix()
-        matrix.postRotate(90F)
-        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
-    }
 
-    private fun bindClassifiedBirdView(bitmap: Bitmap?, result: Classification?, date: String?){
-        binding.classifiedBirdView.setPhoto(bitmap)
+    private fun bindClassifiedBirdView(path: String?, result: Classification?, date: String?){
+        binding.classifiedBirdView.setPhoto(path)
         binding.classifiedBirdView.setFirstResult(result?.mainClassification, (result?.mainProbability?.times(
             100
         )))
