@@ -80,7 +80,13 @@ class HomeFragment : Fragment() {
         binding.buttonTakePhoto.setOnClickListener { takePhoto() }
 
         viewModel.lastBird.observe(viewLifecycleOwner){
-            bindClassifiedBirdView(it?.photoUri, it?.classification, it?.date)
+            if(it==null){
+                binding.classifiedBirdView.visibility=View.GONE
+            }
+            else{
+                binding.classifiedBirdView.visibility=View.VISIBLE
+                bindClassifiedBirdView(it.photoUri, it.classification, it.date)
+            }
         }
     }
 

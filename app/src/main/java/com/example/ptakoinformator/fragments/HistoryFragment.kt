@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ptakoinformator.R
 import com.example.ptakoinformator.viewmodels.HistoryViewModel
@@ -37,7 +38,7 @@ class HistoryFragment: Fragment() {
 
         val historyListAdapter = HistoryListAdapter(viewModel.birds)
 
-        val historyLayoutManager = GridLayoutManager(context,2)
+        val historyLayoutManager = LinearLayoutManager(context)
 
         viewModel.birds.observe(viewLifecycleOwner,
         Observer {

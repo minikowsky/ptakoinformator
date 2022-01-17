@@ -9,8 +9,8 @@
 
     <com.example.ptakoinformator.customview.ClassifiedBirdView
         android:id="@+id/classified_bird_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

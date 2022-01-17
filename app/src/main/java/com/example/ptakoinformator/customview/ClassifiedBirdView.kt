@@ -41,16 +41,16 @@ class ClassifiedBirdView(context: Context, attrs: AttributeSet?): ConstraintLayo
             .into(imageView)
     }
     fun setDate(date:String?){
-        txtViewDate.text=("Data: ${date?:""}")
+        txtViewDate.text=("Data: ${date}")
     }
     fun setFirstResult(classification: String?, result:Float?){
-        txtViewFirstResult.text=("1: ${classification?:""}-${result?:""}")
+        txtViewFirstResult.text=("1: ${classification}-${String.format("%.2f", result)}")
     }
     fun setSecondResult(classification: String?, result:Float?){
-        txtViewSecondResult.text=("2: ${classification?:""}-${result?:""}")
+        txtViewSecondResult.text=("2: ${classification}-${String.format("%.2f", result)}")
     }
     fun setThirdResult(classification: String?, result:Float?){
-        txtViewThirdResult.text=("3: ${classification?:""}-${result?:""}")
+        txtViewThirdResult.text=("3: ${classification}-${String.format("%.2f", result)}")
     }
 
 
