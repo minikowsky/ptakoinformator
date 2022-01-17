@@ -32,11 +32,11 @@ class HistoryListAdapter(private val birds: LiveData<List<Bird>>)
         holder.classifiedBirdView.setPhoto(thumbnail)
         holder.classifiedBirdView.setDate(current?.date)
         holder.classifiedBirdView.setFirstResult(
-            current?.classification?.mainClassification,current?.classification?.mainProbability.toString())
+            current?.classification?.mainClassification,current?.classification?.mainProbability)
         holder.classifiedBirdView.setSecondResult(
-            current?.classification?.secondClassification,current?.classification?.secondProbability.toString())
+            current?.classification?.secondClassification, current?.classification?.secondProbability)
         holder.classifiedBirdView.setThirdResult(
-            current?.classification?.thirdClassification,current?.classification?.thirdProbability.toString())
+            current?.classification?.thirdClassification, current?.classification?.thirdProbability)
 
     }
 

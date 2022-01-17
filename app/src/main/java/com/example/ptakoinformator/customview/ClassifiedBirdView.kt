@@ -30,19 +30,19 @@ class ClassifiedBirdView(context: Context, attrs: AttributeSet?): ConstraintLayo
 
     }
 
-    fun setPhoto(bitmap: Bitmap){
+    fun setPhoto(bitmap: Bitmap?){
         imageView.setImageBitmap(bitmap)
     }
     fun setDate(date:String?){
         txtViewDate.text=("Data: ${date?:""}")
     }
-    fun setFirstResult(classification: String?, result:String?){
+    fun setFirstResult(classification: String?, result:Float?){
         txtViewFirstResult.text=("1: ${classification?:""}-${result?:""}")
     }
-    fun setSecondResult(classification: String?, result:String?){
+    fun setSecondResult(classification: String?, result:Float?){
         txtViewSecondResult.text=("2: ${classification?:""}-${result?:""}")
     }
-    fun setThirdResult(classification: String?, result:String?){
+    fun setThirdResult(classification: String?, result:Float?){
         txtViewThirdResult.text=("3: ${classification?:""}-${result?:""}")
     }
 

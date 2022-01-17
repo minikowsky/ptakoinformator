@@ -80,9 +80,11 @@ class HomeFragment : Fragment() {
         binding.buttonTakePhoto.setOnClickListener { takePhoto() }
 
         viewModel.lastBird.observe(viewLifecycleOwner){
-            val bitmap = BitmapFactory.decodeFile(it.photoUri)
+
+            val bitmap = BitmapFactory.decodeFile(it?.photoUri)
             val thumbnail = ThumbnailUtils.extractThumbnail(bitmap,200,200)
-            bindClassifiedBirdView(thumbnail, it.classification, it.date)
+            bindClassifiedBirdView(thumbnail, it?.classification, it?.date)
+
         }
     }
 
@@ -246,11 +248,17 @@ class HomeFragment : Fragment() {
         return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 
-    private fun bindClassifiedBirdView(bitmap: Bitmap, result: Classification, date: String){
+    private fun bindClassifiedBirdView(bitmap: Bitmap?, result: Classification?, date: String?){
         binding.classifiedBirdView.setPhoto(bitmap)
-        binding.classifiedBirdView.setFirstResult(result.mainClassification, (result.mainProbability*100).toString())
-        binding.classifiedBirdView.setSecondResult(result.secondClassification, (result.secondProbability*100).toString())
-        binding.classifiedBirdView.setThirdResult(result.thirdClassification, (result.thirdProbability*100).toString())
+        binding.classifiedBirdView.setFirstResult(result?.mainClassification, (result?.mainProbability?.times(
+            100
+        )))
+        binding.classifiedBirdView.setSecondResult(result?.secondClassification, (result?.secondProbability?.times(
+            100
+        )))
+        binding.classifiedBirdView.setThirdResult(result?.thirdClassification, (result?.thirdProbability?.times(
+            100
+        )))
         binding.classifiedBirdView.setDate(date)
     }
 
