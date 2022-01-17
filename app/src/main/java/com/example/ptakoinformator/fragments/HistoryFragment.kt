@@ -2,10 +2,12 @@ package com.example.ptakoinformator.fragments
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Environment.getExternalStorageDirectory
 import android.provider.MediaStore
 import android.text.Html
 import android.util.Log
@@ -26,6 +28,15 @@ import com.example.ptakoinformator.viewmodels.HistoryViewModel
 import com.example.ptakoinformator.viewmodels.HistoryViewModelFactory
 import java.io.File
 import java.util.*
+import android.media.MediaScannerConnection
+import android.media.MediaScannerConnection.OnScanCompletedListener
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
+import java.io.IOException
+import java.io.OutputStream
+
 
 class HistoryFragment: Fragment() {
 
@@ -40,6 +51,7 @@ class HistoryFragment: Fragment() {
         return inflater.inflate(R.layout.history_fragment,container,false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,17 +75,41 @@ class HistoryFragment: Fragment() {
             //TODO: Generate html file
 
             val htmlText: String = getHtmlText(viewModel.birds)
+            try {
+                val values = ContentValues()
+
+                values.put(
+                    MediaStore.MediaColumns.DISPLAY_NAME,
+                    "report"
+                )
+
+                values.put(
+                    MediaStore.MediaColumns.MIME_TYPE,
+                    "text/html"
+                )
+
+                values.put(
+                    MediaStore.MediaColumns.RELATIVE_PATH,
+                    Environment.DIRECTORY_DOCUMENTS + "/Reports/"
+                )
 
 
-            Log.println(Log.INFO,"html save","beginning of creating")
-            File.createTempFile(
-                "raport_${Date()}",
-                ".html",requireContext()
-                    .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)).apply {
-                        this.appendText(htmlText)
-                Log.println(Log.INFO,"html save","creating")
+                val uri: Uri? = requireActivity().contentResolver.insert(
+                    MediaStore.Files.getContentUri("external"),
+                    values
+                )
+
+
+                val outputStream: OutputStream? =
+                    requireActivity().contentResolver.openOutputStream(uri!!)
+
+                outputStream?.write(htmlText.toByteArray())
+
+                outputStream?.close()
+            } catch ( e:IOException) {
+                Toast.makeText(view.getContext(), "Fail to create file", Toast.LENGTH_SHORT).show();
             }
-            Log.println(Log.INFO,"html save","end of creating")
+
         }
     }
 
@@ -87,7 +123,7 @@ class HistoryFragment: Fragment() {
                 "<table>\n" +
                 "<td>"
         birds.value?.forEach {
-            s+="<tr><p>${it.date}<img src=\"${it.photoUri}\" alt=\"${it.photoUri}\" width=\"500\" height=\"500\">"
+            s+="<tr><p>${it.date}<img src=\"${File(it.photoUri).toUri()}\" alt=\"${File(it.photoUri).toUri()}\" width=\"500\" height=\"500\">"
             s+="<p>Klasyfikacja:</p>"
             s+="<p>Największe prawdopodobieństwo: ${it.classification.mainClassification}-${it.classification.mainProbability}</p>"
             s+="<p>Drugie najwyższe: ${it.classification.secondClassification}-${it.classification.secondProbability}</p>"
@@ -123,3 +159,5 @@ class HistoryFragment: Fragment() {
     }*/
 
 }
+
+
