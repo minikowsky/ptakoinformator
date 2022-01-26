@@ -1,6 +1,7 @@
 package com.example.ptakoinformator.fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -74,42 +75,51 @@ class HistoryFragment: Fragment() {
         view.findViewById<Button>(R.id.button_export_html).setOnClickListener {
             //TODO: Generate html file
 
-            val htmlText: String = getHtmlText(viewModel.birds)
-            try {
-                val values = ContentValues()
+            val builder = AlertDialog.Builder(activity).apply {
+                setTitle("Potwierdzenie")
+                setMessage("Czy na pewno chcesz wyeksportować zdjęcia do pliku html?")
+                setNegativeButton("Nie") {dialog, _ ->
+                    dialog.cancel()
+                }
+                setPositiveButton("Tak") { dialog, _ ->
+                    val htmlText: String = getHtmlText(viewModel.birds)
+                    try {
+                        val values = ContentValues()
 
-                values.put(
-                    MediaStore.MediaColumns.DISPLAY_NAME,
-                    "report"
-                )
+                        values.put(
+                            MediaStore.MediaColumns.DISPLAY_NAME,
+                            "report"
+                        )
 
-                values.put(
-                    MediaStore.MediaColumns.MIME_TYPE,
-                    "text/html"
-                )
+                        values.put(
+                            MediaStore.MediaColumns.MIME_TYPE,
+                            "text/html"
+                        )
 
-                values.put(
-                    MediaStore.MediaColumns.RELATIVE_PATH,
-                    Environment.DIRECTORY_DOCUMENTS + "/Reports/"
-                )
-
-
-                val uri: Uri? = requireActivity().contentResolver.insert(
-                    MediaStore.Files.getContentUri("external"),
-                    values
-                )
+                        values.put(
+                            MediaStore.MediaColumns.RELATIVE_PATH,
+                            Environment.DIRECTORY_DOCUMENTS + "/Reports/"
+                        )
 
 
-                val outputStream: OutputStream? =
-                    requireActivity().contentResolver.openOutputStream(uri!!)
+                        val uri: Uri? = requireActivity().contentResolver.insert(
+                            MediaStore.Files.getContentUri("external"),
+                            values
+                        )
 
-                outputStream?.write(htmlText.toByteArray())
 
-                outputStream?.close()
-            } catch ( e:IOException) {
-                Toast.makeText(view.getContext(), "Fail to create file", Toast.LENGTH_SHORT).show();
+                        val outputStream: OutputStream? =
+                            requireActivity().contentResolver.openOutputStream(uri!!)
+
+                        outputStream?.write(htmlText.toByteArray())
+
+                        outputStream?.close()
+                    } catch ( e:IOException) {
+                        Toast.makeText(view.getContext(), "Fail to create file", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
-
+            builder.create().show()
         }
     }
 
