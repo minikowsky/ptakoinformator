@@ -58,7 +58,7 @@ class HistoryFragment: Fragment() {
 
         val historyListAdapter = HistoryListAdapter(viewModel.birds)
 
-        val historyLayoutManager = LinearLayoutManager(context)
+        val historyLayoutManager = GridLayoutManager(context,2)
 
         viewModel.birds.observe(viewLifecycleOwner,
         Observer {
