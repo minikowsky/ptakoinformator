@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ptakoinformator.R
 import com.example.ptakoinformator.customview.ClassifiedBirdView
 import com.example.ptakoinformator.data.Bird
+import com.example.ptakoinformator.data.Classification
 
 class HistoryListAdapter(private val birds: LiveData<List<Bird>>)
     :RecyclerView.Adapter<HistoryListAdapter.Holder>() {
@@ -29,14 +30,19 @@ class HistoryListAdapter(private val birds: LiveData<List<Bird>>)
         val current = birds.value?.get(position)
         holder.classifiedBirdView.setPhoto(current?.photoUri)
         holder.classifiedBirdView.setDate(current?.date)
-        holder.classifiedBirdView.setFirstResult(
-            current?.classification?.mainClassification,current?.classification?.mainProbability)
-        holder.classifiedBirdView.setSecondResult(
-            current?.classification?.secondClassification, current?.classification?.secondProbability)
-        holder.classifiedBirdView.setThirdResult(
-            current?.classification?.thirdClassification, current?.classification?.thirdProbability)
+        holder.classifiedBirdView.setFirstResult(current?.classification?.mainClassification, (current?.classification?.mainProbability?.times(
+            100
+        )))
+        holder.classifiedBirdView.setSecondResult(current?.classification?.secondClassification, (current?.classification?.secondProbability?.times(
+            100
+        )))
+        holder.classifiedBirdView.setThirdResult(current?.classification?.thirdClassification, (current?.classification?.thirdProbability?.times(
+            100
+        )))
 
     }
+
+
 
     override fun getItemCount(): Int = birds.value?.size?:0
 }
