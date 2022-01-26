@@ -112,23 +112,27 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private val getImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    private val getImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ it ->
         if (it.resultCode == Activity.RESULT_OK) {
             val selectedImage = it.data?.data
-            val result=viewModel.classifyBird(selectedImage!!,requireContext())
-            currentPhotoPath=getRealPathFromURI(selectedImage)!!
-            Log.d("DBG",currentPhotoPath)
-            val bird = Bird(0,
-                currentPhotoPath,
-                getCurrentDate(),
-                "",
-                Classification(
-                    result[0].score,result[0].label,
-                    result[1].score,result[1].label,
-                    result[2].score,result[2].label)
-            )
-            viewModel.createBird(bird)
-            bindClassifiedBirdView(currentPhotoPath,bird.classification, getCurrentDate())
+            viewModel.classifyBird(selectedImage!!,requireContext())
+            currentPhotoPath=getRealPathFromURI(selectedImage!!)!!
+            var bird : Bird
+            viewModel.categoryList.observe(viewLifecycleOwner) {result->
+                bird = Bird(
+                    0,
+                    currentPhotoPath,
+                    getCurrentDate(),
+                    "",
+                    Classification(
+                        result[0].score, result[0].label,
+                        result[1].score, result[1].label,
+                        result[2].score, result[2].label
+                    )
+                )
+                viewModel.createBird(bird)
+                bindClassifiedBirdView(currentPhotoPath, bird.classification, getCurrentDate())
+            }
         }
     }
     @Throws(IOException::class)
@@ -182,18 +186,23 @@ class HomeFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             val uri=Uri.fromFile(File(currentPhotoPath))
             Log.d("ADK",uri.toString())
-            val result=viewModel.classifyBird(uri,requireContext())
-            val bird = Bird(0,
-                currentPhotoPath,
-                getCurrentDate(),
-                "",
-                Classification(
-                    result[0].score,result[0].label,
-                    result[1].score,result[1].label,
-                    result[2].score,result[2].label)
-            )
-            viewModel.createBird(bird)
-            bindClassifiedBirdView(currentPhotoPath,bird.classification, getCurrentDate())
+            viewModel.classifyBird(uri,requireContext())
+            var bird : Bird
+            viewModel.categoryList.observe(viewLifecycleOwner) {result->
+                bird = Bird(
+                    0,
+                    currentPhotoPath,
+                    getCurrentDate(),
+                    "",
+                    Classification(
+                        result[0].score, result[0].label,
+                        result[1].score, result[1].label,
+                        result[2].score, result[2].label
+                    )
+                )
+                viewModel.createBird(bird)
+                bindClassifiedBirdView(currentPhotoPath, bird.classification, getCurrentDate())
+            }
         }
     }
 

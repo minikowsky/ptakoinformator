@@ -40,27 +40,30 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     private val birdDao: BirdDao = BirdDatabase.getInstance(application).birdDao
     val lastBird: LiveData<Bird> = birdDao.getLast()
 
-    fun classifyBird(uri: Uri, context: Context): List<Category> {
-        if(Build.VERSION.SDK_INT >= 29) {
-            val source: ImageDecoder.Source = ImageDecoder.createSource(
-                context.contentResolver,
-                uri
-            )
-            var bitmap: Bitmap = ImageDecoder.decodeBitmap(source)
-            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-            val model = TFLiteModelManager.getInstance(context)
-            val outputs = model.process(TensorImage.fromBitmap(bitmap))
-            return getTop3Results(outputs.probabilityAsCategoryList)
-        }
-        else {
-            @Suppress("DEPRECATION")
-            var bitmap=MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-            val model = TFLiteModelManager.getInstance(context)
-            val outputs = model.process(TensorImage.fromBitmap(bitmap))
-            return getTop3Results(outputs.probabilityAsCategoryList)
-        }
+    var categoryList: MutableLiveData<List<Category>> = MutableLiveData<List<Category>>()
 
+    fun classifyBird(uri: Uri, context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if(Build.VERSION.SDK_INT >= 29) {
+                val source: ImageDecoder.Source = ImageDecoder.createSource(
+                    context.contentResolver,
+                    uri
+                )
+                var bitmap: Bitmap = ImageDecoder.decodeBitmap(source)
+                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                val model = TFLiteModelManager.getInstance(context)
+                val outputs = model.process(TensorImage.fromBitmap(bitmap))
+                categoryList.postValue(getTop3Results(outputs.probabilityAsCategoryList))
+            }
+            else {
+                @Suppress("DEPRECATION")
+                var bitmap=MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                val model = TFLiteModelManager.getInstance(context)
+                val outputs = model.process(TensorImage.fromBitmap(bitmap))
+                categoryList.postValue(getTop3Results(outputs.probabilityAsCategoryList))
+            }
+        }
     }
 
     private fun getTop3Results(result:MutableList<Category>): List<Category> {
