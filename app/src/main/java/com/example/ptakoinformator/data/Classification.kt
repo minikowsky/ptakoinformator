@@ -6,5 +6,7 @@ data class Classification(
     val secondProbability: Float,
     val secondClassification:String,
     val thirdProbability: Float,
-    val thirdClassification:String
+    val thirdClassification:String,
+    val fourthProbability: Float,
+    val fourthClassification:String
 )

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Bird::class], version = 1, exportSchema = false)
+@Database(entities = [Bird::class], version = 2, exportSchema = false)
 abstract class BirdDatabase: RoomDatabase() {
     abstract val birdDao: BirdDao
 
@@ -21,7 +21,9 @@ abstract class BirdDatabase: RoomDatabase() {
                         context.applicationContext,
                         BirdDatabase::class.java,
                         "bird_database"
-                    ).build()
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
                     INSTANCE = instance
                 }
                 return instance

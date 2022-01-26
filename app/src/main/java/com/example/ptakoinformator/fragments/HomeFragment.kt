@@ -125,7 +125,8 @@ class HomeFragment : Fragment() {
                 Classification(
                     result[0].score,result[0].label,
                     result[1].score,result[1].label,
-                    result[2].score,result[2].label)
+                    result[2].score,result[2].label,
+                    result[3].score, result[3].label)
             )
             viewModel.createBird(bird)
             bindClassifiedBirdView(currentPhotoPath,bird.classification, getCurrentDate())
@@ -190,7 +191,8 @@ class HomeFragment : Fragment() {
                 Classification(
                     result[0].score,result[0].label,
                     result[1].score,result[1].label,
-                    result[2].score,result[2].label)
+                    result[2].score,result[2].label,
+                    result[3].score, result[3].label)
             )
             viewModel.createBird(bird)
             bindClassifiedBirdView(currentPhotoPath,bird.classification, getCurrentDate())
@@ -247,6 +249,9 @@ class HomeFragment : Fragment() {
             100
         )))
         binding.classifiedBirdView.setThirdResult(result?.thirdClassification, (result?.thirdProbability?.times(
+            100
+        )))
+        binding.classifiedBirdView.setFourthResult(result?.fourthClassification, (result?.fourthProbability?.times(
             100
         )))
         binding.classifiedBirdView.setDate(date)

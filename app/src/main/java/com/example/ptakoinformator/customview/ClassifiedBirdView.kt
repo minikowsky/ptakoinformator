@@ -22,6 +22,7 @@ class ClassifiedBirdView(context: Context, attrs: AttributeSet?): ConstraintLayo
     private val txtViewFirstResult:TextView
     private val txtViewSecondResult:TextView
     private val txtViewThirdResult:TextView
+    private val txtViewFourthResult:TextView
     private val txtViewDate:TextView
     init {
         inflate(context, R.layout.classified_bird_view, this)
@@ -29,6 +30,7 @@ class ClassifiedBirdView(context: Context, attrs: AttributeSet?): ConstraintLayo
         txtViewFirstResult=findViewById<TextView>(R.id.txt_view_first_result)
         txtViewSecondResult=findViewById<TextView>(R.id.txt_view_second_result)
         txtViewThirdResult=findViewById<TextView>(R.id.txt_view_third_result)
+        txtViewFourthResult=findViewById<TextView>(R.id.txt_view_fourth_result)
         txtViewDate=findViewById<TextView>(R.id.txt_view_date)
 
     }
@@ -51,6 +53,9 @@ class ClassifiedBirdView(context: Context, attrs: AttributeSet?): ConstraintLayo
     }
     fun setThirdResult(classification: String?, result:Float?){
         txtViewThirdResult.text=("3: ${classification}-${String.format("%.2f", result)}")
+    }
+    fun setFourthResult(classification: String?, result:Float?){
+        txtViewFourthResult.text=("4: ${classification}-${String.format("%.2f", result)}")
     }
 
 

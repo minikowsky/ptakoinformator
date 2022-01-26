@@ -35,6 +35,8 @@ class HistoryListAdapter(private val birds: LiveData<List<Bird>>)
             current?.classification?.secondClassification, current?.classification?.secondProbability)
         holder.classifiedBirdView.setThirdResult(
             current?.classification?.thirdClassification, current?.classification?.thirdProbability)
+        holder.classifiedBirdView.setFourthResult(
+            current?.classification?.fourthClassification, current?.classification?.fourthProbability)
 
     }
 
