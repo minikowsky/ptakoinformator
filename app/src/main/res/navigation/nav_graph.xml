@@ -13,10 +13,17 @@
         <action
             android:id="@+id/action_fragmentHome_to_fragmentReports"
             app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.ptakoinformator.fragments.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/history_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.ptakoinformator.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

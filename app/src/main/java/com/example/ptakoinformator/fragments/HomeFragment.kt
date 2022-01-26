@@ -75,6 +75,9 @@ class HomeFragment : Fragment() {
         binding.buttonShowReports.setOnClickListener{
             it.findNavController().navigate(HomeFragmentDirections.actionFragmentHomeToFragmentReports())
         }
+        binding.buttonSettings.setOnClickListener {
+            it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
+        }
         binding.buttonUploadPhoto.setOnClickListener { pickImageGallery() }
 
         binding.buttonTakePhoto.setOnClickListener { takePhoto() }
