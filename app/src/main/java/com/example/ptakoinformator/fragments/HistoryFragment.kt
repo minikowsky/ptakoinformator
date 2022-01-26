@@ -56,7 +56,7 @@ class HistoryFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val historyListAdapter = HistoryListAdapter(viewModel.birds)
+        val historyListAdapter = HistoryListAdapter(viewModel.birds, viewModel)
 
         val historyLayoutManager = LinearLayoutManager(context)
 
