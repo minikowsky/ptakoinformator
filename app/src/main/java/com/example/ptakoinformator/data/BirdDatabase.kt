@@ -21,7 +21,8 @@ abstract class BirdDatabase: RoomDatabase() {
                         context.applicationContext,
                         BirdDatabase::class.java,
                         "bird_database"
-                    ).build()
+                    ).fallbackToDestructiveMigration()
+                        .build()
                     INSTANCE = instance
                 }
                 return instance

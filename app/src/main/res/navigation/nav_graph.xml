@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.ptakoinformator.fragments.HomeFragment"
-        android:label="fragment_home"
+        android:label="Klasyfikacja"
         tools:layout="@layout/home_fragment" >
         <action
             android:id="@+id/action_fragmentHome_to_fragmentReports"
@@ -17,6 +17,6 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.ptakoinformator.fragments.HistoryFragment"
-        android:label="fragment_history"
+        android:label="Historia"
         tools:layout="@layout/history_fragment" />
 </navigation>
