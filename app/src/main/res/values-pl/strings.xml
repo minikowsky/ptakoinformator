@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Ptakoinformator</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="upload_photo">WGRAJ ZDJĘCIE</string>
+    <string name="show_reports">PRZEGLĄDAJ RAPORTY</string>
+    <string name="export_html">EKSPORTUJ DO PLIKU .HTML</string>
+    <string name="classification">Klasyfikacja</string>
+</resources>
