@@ -2,58 +2,34 @@ package com.example.ptakoinformator.fragments
 
 
 import android.Manifest
-import android.R.attr
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
-import android.media.ThumbnailUtils
-
+import android.database.Cursor
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Environment.DIRECTORY_PICTURES
 import android.provider.MediaStore
-
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.os.Build
 import android.util.Log
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.example.ptakoinformator.TFLiteModelManager
+import com.example.ptakoinformator.data.Bird
+import com.example.ptakoinformator.data.Classification
 import com.example.ptakoinformator.databinding.HomeFragmentBinding
 import com.example.ptakoinformator.viewmodels.HomeViewModel
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.label.Category
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
-import android.R.attr.path
-import android.database.Cursor
-import android.graphics.Matrix
-import java.net.URI
-import android.os.ParcelFileDescriptor
-import android.util.Size
-import com.example.ptakoinformator.data.Bird
-import com.example.ptakoinformator.data.Classification
-import java.io.FileDescriptor
 
 
 class HomeFragment : Fragment() {
@@ -79,6 +55,8 @@ class HomeFragment : Fragment() {
 
         binding.buttonTakePhoto.setOnClickListener { takePhoto() }
 
+        var path: String? = null
+
         viewModel.lastBird.observe(viewLifecycleOwner){
             if(it==null){
                 binding.classifiedBirdView.visibility=View.GONE
@@ -86,7 +64,14 @@ class HomeFragment : Fragment() {
             else{
                 binding.classifiedBirdView.visibility=View.VISIBLE
                 bindClassifiedBirdView(it.photoUri, it.classification, it.date)
+                path = it.photoUri
             }
+        }
+
+        binding.classifiedBirdView.setOnClickListener{
+            val exif = ExifInterface(path!!)
+            val date = exif.getAttribute(ExifInterface.TAG_DATETIME)
+            date?.let{d -> Toast.makeText(requireContext(), d, Toast.LENGTH_SHORT).show()}
         }
     }
 
