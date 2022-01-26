@@ -5,4 +5,11 @@
     <string name="upload_photo">WGRAJ ZDJĘCIE</string>
     <string name="show_reports">PRZEGLĄDAJ RAPORTY</string>
     <string name="export_html">EKSPORTUJ DO PLIKU .HTML</string>
+    <string name="developers">TWÓRCY:</string>
+    <string name="bartek">Bartosz Polek</string>
+    <string name="dominik">Dominik Marszałek</string>
+    <string name="lukasz">Łukasz Piątkowski</string>
+    <string name="michal">Michał Milka</string>
+    <string name="purpose">Aplikacja została stworzona na potrzeby projektu z przedmiotu Aplikacje mobilne dla systemu Android</string>
+    <string name="studies">POLSL Informatyka na wydziale MS st. I sem. V - 2022r.</string>
 </resources>

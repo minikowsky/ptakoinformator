@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_fragmentHome_to_fragmentReports"
             app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_creditsFragment"
+            app:destination="@id/creditsFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.ptakoinformator.fragments.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/history_fragment" />
+    <fragment
+        android:id="@+id/creditsFragment"
+        android:name="com.example.ptakoinformator.fragments.CreditsFragment"
+        android:label="credits_fragment"
+        tools:layout="@layout/credits_fragment" />
 </navigation>
