@@ -54,6 +54,7 @@ import android.util.Size
 import com.example.ptakoinformator.data.Bird
 import com.example.ptakoinformator.data.Classification
 import java.io.FileDescriptor
+import kotlin.math.floor
 
 
 class HomeFragment : Fragment() {
@@ -240,15 +241,17 @@ class HomeFragment : Fragment() {
 
     private fun bindClassifiedBirdView(path: String?, result: Classification?, date: String?){
         binding.classifiedBirdView.setPhoto(path)
-        binding.classifiedBirdView.setFirstResult(result?.mainClassification, (result?.mainProbability?.times(
-            100
-        )))
-        binding.classifiedBirdView.setSecondResult(result?.secondClassification, (result?.secondProbability?.times(
-            100
-        )))
-        binding.classifiedBirdView.setThirdResult(result?.thirdClassification, (result?.thirdProbability?.times(
-            100
-        )))
+
+        val firstProb = result?.mainProbability
+        val secondProb = result?.secondProbability
+        val thirdProb = result?.thirdProbability
+
+        binding.classifiedBirdView.setFirstResult(result?.mainClassification,
+            floor(firstProb!! * 100 / 20) + 1)
+        binding.classifiedBirdView.setSecondResult(result?.secondClassification,
+            floor(secondProb!! * 100 / 20) + 1)
+        binding.classifiedBirdView.setThirdResult(result?.thirdClassification,
+            floor(thirdProb!! * 100 / 20) + 1)
         binding.classifiedBirdView.setDate(date)
     }
 
