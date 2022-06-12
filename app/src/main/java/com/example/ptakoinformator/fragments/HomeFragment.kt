@@ -46,20 +46,28 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import android.R.attr.path
+import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.graphics.drawable.GradientDrawable
 import java.net.URI
 import android.os.ParcelFileDescriptor
 import android.util.Size
+import android.widget.Button
+import android.widget.ImageButton
+import androidx.viewbinding.ViewBinding
+import com.example.ptakoinformator.R
+import com.example.ptakoinformator.customview.ClassifiedBirdView
 import com.example.ptakoinformator.data.Bird
 import com.example.ptakoinformator.data.Classification
+import com.example.ptakoinformator.databinding.HomeFragmentHorizontalBinding
 import java.io.FileDescriptor
 
 
 class HomeFragment : Fragment() {
     lateinit var currentPhotoPath: String
-    private var _binding: HomeFragmentBinding? = null
+    private var _binding: ViewBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
     override fun onCreateView(
@@ -67,27 +75,31 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            _binding = HomeFragmentHorizontalBinding.inflate(inflater, container, false)
+            return binding.root
+        }
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonShowReports.setOnClickListener{
+        view.findViewById<Button>(R.id.button_show_reports).setOnClickListener{
             it.findNavController().navigate(HomeFragmentDirections.actionFragmentHomeToFragmentReports())
         }
-        binding.buttonUploadPhoto.setOnClickListener { pickImageGallery() }
+        view.findViewById<Button>(R.id.button_upload_photo).setOnClickListener{pickImageGallery()}
 
-        binding.buttonTakePhoto.setOnClickListener { takePhoto() }
+        view.findViewById<ImageButton>(R.id.button_take_photo).setOnClickListener { takePhoto() }
 
         var path: String? = null
 
         viewModel.lastBird.observe(viewLifecycleOwner){
             if(it==null){
-                binding.classifiedBirdView.visibility=View.GONE
+                view.findViewById<ClassifiedBirdView>(R.id.classified_bird_view).visibility=View.GONE
             }
             else{
-                binding.classifiedBirdView.visibility=View.VISIBLE
+                view.findViewById<ClassifiedBirdView>(R.id.classified_bird_view).visibility=View.VISIBLE
                 bindClassifiedBirdView(it.photoUri, it.classification, it.date)
                 path = it.photoUri
             }
@@ -282,11 +294,25 @@ class HomeFragment : Fragment() {
 
 
     private fun bindClassifiedBirdView(path: String?, result: Classification?, date: String?){
+<<<<<<< HEAD
         binding.classifiedBirdView.setPhoto(path)
         binding.classifiedBirdView.setFirstResult(result?.mainClassification, (result?.mainProbability))
         binding.classifiedBirdView.setSecondResult(result?.secondClassification, (result?.secondProbability))
         binding.classifiedBirdView.setThirdResult(result?.thirdClassification, (result?.thirdProbability))
         binding.classifiedBirdView.setDate(date)
+=======
+        view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setPhoto(path)
+        view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setFirstResult(result?.mainClassification, (result?.mainProbability?.times(
+            100
+        )))
+        view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setSecondResult(result?.secondClassification, (result?.secondProbability?.times(
+            100
+        )))
+        view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setThirdResult(result?.thirdClassification, (result?.thirdProbability?.times(
+            100
+        )))
+        view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setDate(date)
+>>>>>>> origin/layout_12_wyglad_dla_pozycji_horyzontalnej
     }
 
 
