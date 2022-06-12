@@ -56,6 +56,7 @@ import android.os.ParcelFileDescriptor
 import android.util.Size
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.viewbinding.ViewBinding
 import com.example.ptakoinformator.R
 import com.example.ptakoinformator.customview.ClassifiedBirdView
@@ -89,7 +90,7 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(HomeFragmentDirections.actionFragmentHomeToFragmentReports())
         }
         view.findViewById<Button>(R.id.button_upload_photo).setOnClickListener{pickImageGallery()}
-        view.findViewById<Button>(R.id.button_settings).setOnClickListener {
+        view.findViewById<AppCompatImageButton>(R.id.button_settings).setOnClickListener {
             it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
         }
         view.findViewById<ImageButton>(R.id.button_take_photo).setOnClickListener { takePhoto() }
@@ -107,7 +108,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.classifiedBirdView.setOnClickListener {
+        view.findViewById<View>(R.id.classified_bird_view).setOnClickListener {
             val exif = ExifInterface(path!!)
             var geolocation = FloatArray(2)
             exif.getLatLong(geolocation)
@@ -144,19 +145,15 @@ class HomeFragment : Fragment() {
             currentPhotoPath=getRealPathFromURI(selectedImage!!)!!
             var bird : Bird
             viewModel.categoryList.observe(viewLifecycleOwner) {result->
-                val total_percentage = result[0].score + result[1].score + result[2].score
-                val result1 = result[0].score / total_percentage * 100
-                val result2 = result[1].score / total_percentage * 100
-                val result3 = result[2].score / total_percentage * 100
                 bird = Bird(
                     0,
                     currentPhotoPath,
                     getCurrentDate(),
                     "",
                     Classification(
-                        result1.score, result[0].label,
-                        result2.score, result[1].label,
-                        result3.score, result[2].label
+                        result[0].score, result[0].label,
+                        result[1].score, result[1].label,
+                        result[3].score, result[2].label
                     )
                 )
                 viewModel.createBird(bird)
@@ -215,7 +212,6 @@ class HomeFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             val uri=Uri.fromFile(File(currentPhotoPath))
             Log.d("ADK",uri.toString())
-<<<<<<< HEAD
             viewModel.classifyBird(uri,requireContext())
             var bird : Bird
             viewModel.categoryList.observe(viewLifecycleOwner) {result->
@@ -233,24 +229,6 @@ class HomeFragment : Fragment() {
                 viewModel.createBird(bird)
                 bindClassifiedBirdView(currentPhotoPath, bird.classification, getCurrentDate())
             }
-=======
-            val result=viewModel.classifyBird(uri,requireContext())
-            val total_percetage = result[0].score + result[1].score + result[2].score
-            val result1 = result[0].score / total_percetage * 100
-            val result2 = result[1].score / total_percetage * 100
-            val result3 = result[2].score / total_percetage * 100
-            val bird = Bird(0,
-                currentPhotoPath,
-                getCurrentDate(),
-                "",
-                Classification(
-                    result1,result[0].label,
-                    result2,result[1].label,
-                    result3,result[2].label)
-            )
-            viewModel.createBird(bird)
-            bindClassifiedBirdView(currentPhotoPath,bird.classification, getCurrentDate())
->>>>>>> origin/layout_skala_100_procent
         }
     }
 
@@ -296,13 +274,6 @@ class HomeFragment : Fragment() {
 
 
     private fun bindClassifiedBirdView(path: String?, result: Classification?, date: String?){
-<<<<<<< HEAD
-        binding.classifiedBirdView.setPhoto(path)
-        binding.classifiedBirdView.setFirstResult(result?.mainClassification, (result?.mainProbability))
-        binding.classifiedBirdView.setSecondResult(result?.secondClassification, (result?.secondProbability))
-        binding.classifiedBirdView.setThirdResult(result?.thirdClassification, (result?.thirdProbability))
-        binding.classifiedBirdView.setDate(date)
-=======
         view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setPhoto(path)
         view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setFirstResult(result?.mainClassification, (result?.mainProbability?.times(
             100
@@ -314,7 +285,6 @@ class HomeFragment : Fragment() {
             100
         )))
         view?.findViewById<ClassifiedBirdView>(R.id.classified_bird_view)?.setDate(date)
->>>>>>> origin/layout_12_wyglad_dla_pozycji_horyzontalnej
     }
 
 

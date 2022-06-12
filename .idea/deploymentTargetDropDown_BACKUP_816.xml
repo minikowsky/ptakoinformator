@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="deploymentTargetDropDown">
+    <targetSelectedWithDropDown>
+      <Target>
+        <type value="QUICK_BOOT_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+<<<<<<< HEAD
+            <value value="C:\Users\Lukasz\.android\avd\Pixel_5_API_30.avd" />
+=======
+            <value value="C:\Users\kaspi\.android\avd\8_Fold-out_API_30.avd" />
+>>>>>>> origin/layout_skala_100_procent
+          </Key>
+        </deviceKey>
+      </Target>
+    </targetSelectedWithDropDown>
+<<<<<<< HEAD
+    <timeTargetWasSelectedWithDropDown value="2022-01-26T17:31:52.106531900Z" />
+=======
+    <timeTargetWasSelectedWithDropDown value="2022-01-26T17:07:11.284707200Z" />
+>>>>>>> origin/layout_skala_100_procent
+  </component>
+</project>
