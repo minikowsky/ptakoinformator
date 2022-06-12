@@ -48,6 +48,7 @@ import java.util.*
 import android.R.attr.path
 import android.database.Cursor
 import android.graphics.Matrix
+import android.media.ExifInterface
 import java.net.URI
 import android.os.ParcelFileDescriptor
 import android.util.Size
@@ -79,6 +80,8 @@ class HomeFragment : Fragment() {
 
         binding.buttonTakePhoto.setOnClickListener { takePhoto() }
 
+        var path: String? = null
+
         viewModel.lastBird.observe(viewLifecycleOwner){
             if(it==null){
                 binding.classifiedBirdView.visibility=View.GONE
@@ -86,7 +89,15 @@ class HomeFragment : Fragment() {
             else{
                 binding.classifiedBirdView.visibility=View.VISIBLE
                 bindClassifiedBirdView(it.photoUri, it.classification, it.date)
+                path = it.photoUri
             }
+        }
+
+        binding.classifiedBirdView.setOnClickListener {
+            val exif = ExifInterface(path!!)
+            var geolocation = FloatArray(2)
+            exif.getLatLong(geolocation)
+            Toast.makeText(requireContext(), geolocation.contentToString(), Toast.LENGTH_SHORT).show()
         }
     }
 
