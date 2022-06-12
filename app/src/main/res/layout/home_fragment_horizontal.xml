@@ -9,14 +9,13 @@
 
     <com.example.ptakoinformator.customview.ClassifiedBirdView
         android:id="@+id/classified_bird_view"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:layout_marginStart="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintVertical_bias="0.35"
         />
 
@@ -53,17 +52,19 @@
         app:layout_constraintBottom_toTopOf="@id/button_show_reports"
         app:layout_constraintEnd_toEndOf="@id/button_show_reports"
         app:layout_constraintStart_toStartOf="@id/button_show_reports" />
+
     <Button
         android:id="@+id/button_show_reports"
-        android:layout_height="wrap_content"
         android:layout_width="210dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="#303030"
-        app:layout_constraintVertical_bias="0.62"
         android:text="@string/show_reports"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/classified_bird_view" />
+        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

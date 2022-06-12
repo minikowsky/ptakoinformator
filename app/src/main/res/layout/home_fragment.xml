@@ -11,11 +11,12 @@
     <com.example.ptakoinformator.customview.ClassifiedBirdView
         android:id="@+id/classified_bird_view"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        android:padding="10dp"/>
 
     <ImageButton
         android:id="@+id/button_take_photo"
@@ -45,7 +46,6 @@
         android:id="@+id/button_upload_photo"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:backgroundTint="#303030"
         android:text="@string/upload_photo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +65,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@mipmap/logo"
         android:layout_margin="20dp"
         app:layout_constraintEnd_toEndOf="parent"
