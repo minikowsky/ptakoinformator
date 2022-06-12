@@ -89,7 +89,9 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(HomeFragmentDirections.actionFragmentHomeToFragmentReports())
         }
         view.findViewById<Button>(R.id.button_upload_photo).setOnClickListener{pickImageGallery()}
-
+        view.findViewById<Button>(R.id.button_settings).setOnClickListener {
+            it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
+        }
         view.findViewById<ImageButton>(R.id.button_take_photo).setOnClickListener { takePhoto() }
 
         var path: String? = null
