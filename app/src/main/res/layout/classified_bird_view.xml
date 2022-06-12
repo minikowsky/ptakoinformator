@@ -4,51 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/plain_blue_background">
+    android:background="#303030">
 
     <TextView
         android:id="@+id/txt_view_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/image_view_bird"
+        android:layout_margin="10dp"
+        android:textColor="#F5F5F5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.64"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/image_view_bird"
+        tools:text="dataaaaaa" />
+
     <ImageView
         android:id="@+id/image_view_bird"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
         android:id="@+id/txt_view_classification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Klasyfikacja:"
+        android:textColor="#F5F5F5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Klayfikacja:"
-        app:layout_constraintTop_toBottomOf="@id/image_view_bird"/>
+        app:layout_constraintTop_toBottomOf="@+id/txt_view_date" />
+
     <TextView
         android:id="@+id/txt_view_first_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#F5F5F5"
+        app:layout_constraintEnd_toEndOf="@+id/txt_view_classification"
         app:layout_constraintStart_toStartOf="@id/txt_view_classification"
-        app:layout_constraintTop_toBottomOf="@id/txt_view_classification"/>
+        app:layout_constraintTop_toBottomOf="@id/txt_view_classification"
+        tools:text="aaaaaaaa" />
+
     <TextView
         android:id="@+id/txt_view_second_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#F5F5F5"
+        app:layout_constraintEnd_toEndOf="@+id/txt_view_classification"
         app:layout_constraintStart_toStartOf="@id/txt_view_classification"
-        app:layout_constraintTop_toBottomOf="@id/txt_view_first_result"/>
+        app:layout_constraintTop_toBottomOf="@id/txt_view_first_result"
+        tools:text="aaaaaa" />
+
     <TextView
         android:id="@+id/txt_view_third_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#F5F5F5"
+        app:layout_constraintEnd_toEndOf="@+id/txt_view_classification"
         app:layout_constraintStart_toStartOf="@id/txt_view_classification"
-        app:layout_constraintTop_toBottomOf="@id/txt_view_second_result"/>
+        app:layout_constraintTop_toBottomOf="@id/txt_view_second_result"
+        tools:text="aaaaaaaa" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#696969"
     tools:context=".fragments.HistoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,8 @@
 
     <Button
         android:id="@+id/button_export_html"
-        android:layout_width="wrap_content"
+        android:layout_width="210dp"
+        android:backgroundTint="#303030"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:layout_gravity="center"

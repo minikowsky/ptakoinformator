@@ -153,7 +153,7 @@ class HomeFragment : Fragment() {
                     Classification(
                         result[0].score, result[0].label,
                         result[1].score, result[1].label,
-                        result[3].score, result[2].label
+                        result[2].score, result[2].label
                     )
                 )
                 viewModel.createBird(bird)

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#696969"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.HomeFragment">
 
@@ -10,6 +11,7 @@
         android:id="@+id/classified_bird_view"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:layout_marginStart="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +29,7 @@
         android:background="@drawable/ic_baseline_add_a_photo_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="#303030"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
@@ -38,11 +41,13 @@
         android:background="@drawable/ic_baseline_settings_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#303030"
         tools:ignore="SpeakableTextPresentCheck" />
     <Button
         android:id="@+id/button_upload_photo"
-        android:layout_width="wrap_content"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#303030"
         android:layout_marginBottom="10dp"
         android:text="@string/upload_photo"
         app:layout_constraintBottom_toTopOf="@id/button_show_reports"
@@ -50,8 +55,9 @@
         app:layout_constraintStart_toStartOf="@id/button_show_reports" />
     <Button
         android:id="@+id/button_show_reports"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="210dp"
+        android:backgroundTint="#303030"
         app:layout_constraintVertical_bias="0.62"
         android:text="@string/show_reports"
         app:layout_constraintTop_toTopOf="parent"
